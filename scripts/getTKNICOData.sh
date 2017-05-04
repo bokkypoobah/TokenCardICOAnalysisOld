@@ -53,13 +53,13 @@ var maxPlaces = 4;
 var tokens = [];
 var tokenInfo = {};
 
-function addToken(token, address, decimals, width, places) {
+function addToken(token, address, decimals, width, places, price) {
   var diff = 0;
   if (places > maxPlaces) {
     diff = places - maxPlaces;
   }
   tokens.push(token);
-  tokenInfo[token] = { "address": address, "decimals": decimals, "width": (width - diff), "places": (places - diff), "total": new BigNumber(0) };
+  tokenInfo[token] = { "token": token, "address": address, "decimals": decimals, "width": (width - diff), "places": (places - diff), "total": new BigNumber(0), "price": price };
   console.log("RESULT: " + token + " decimals=" + decimals + ", width=" + (width - diff) + ", places=" + (places - diff));
 }
 

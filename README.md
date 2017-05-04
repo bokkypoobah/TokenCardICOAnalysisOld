@@ -19,3 +19,4 @@ References:
 * [TokenCard ICO Page](http://tokencard.io)
 * [TKN Token Contract With Errors](https://etherscan.io/address/0x65b9d9b96bcce0b89d807413e4703d2c7451593a)
 * [TokenCard ICO Page](https://etherscan.io/address/0x49edf201c1e139282643d5e7c6fb0c7219ad1db7)
+* [TokenCard Tech Roundup and ERC20 Crediting](http://vessenes.com/tokencard-tech-roundup-and-erc20-crediting/)
