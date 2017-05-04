@@ -38,28 +38,30 @@ function getEtherData() {
       });
     }
   }
-}
-
-console.log("RESULT: Type\tAccount\tEthers\tTokens\tTokensPerEther");
-for (var account in contributionsByAccounts) {
+  console.log("RESULT: Type\tAccount\tEthers\tTokens\tTokensPerEther");
+  for (var account in contributionsByAccounts) {
     var tokenBalance = token.balanceOf(account, icoLastTxBlock);
     var ethers = contributionsByAccounts[account];
     var tokensPerEther = tokenBalance.mul(1e10).div(ethers);
     console.log("RESULT: Balance\t" + account + "\t" + web3.fromWei(ethers, "ether") + "\t" + tokenBalance.div(1e8) + "\t" + tokensPerEther);
+  }
 }
 
 var maxPlaces = 4;
 
 var tokens = [];
 var tokenInfo = {};
+var tokenByAddress = {};
 
 function addToken(token, address, decimals, width, places, price) {
   var diff = 0;
   if (places > maxPlaces) {
     diff = places - maxPlaces;
   }
+  var contract = web3.eth.contract(tokenABI).at(address);
   tokens.push(token);
   tokenInfo[token] = { "token": token, "address": address, "decimals": decimals, "width": (width - diff), "places": (places - diff), "total": new BigNumber(0), "price": price };
+  tokenByAddress[address] = { "token": token, "contract": contract, "decimals": decimals };
   console.log("RESULT: " + token + " decimals=" + decimals + ", width=" + (width - diff) + ", places=" + (places - diff));
 }
 
@@ -74,6 +76,11 @@ addToken("SNGLS", "0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009", 0, 8, 0);
 var filter = web3.eth.filter({fromBlock: icoFirstTxBlock, toBlock: icoLastTxBlock, topics: [["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"]]});
 filter.watch(function(e, r) {
   console.log(JSON.stringify(r));
+  var token = tokenByAddress[r.address];
+  var decimals = token.decimals;
+  var amount = new BigNumber(r.data.substring(2, 66), 16);
+  amount = amount.shift(-decimals);
+  console.log(token.token + " decimals=" + decimals + " amount=" + amount);
 });
 
 EOF
